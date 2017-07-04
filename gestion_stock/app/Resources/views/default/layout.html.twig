@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ path('product_add') }}">Back-office</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            {% if app.user is defined and (is_granted('ROLE_ADMIN') or  is_granted('ROLE_MAGASINIER')) %}
+                                <li>
+                                    <a href="{{ path('product_add') }}">Ajout</a>
+                                </li>
+                            {% endif %}
+
+                            <li>
+                                <a href="{{ path('homepage') }}">Listes</a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Stock <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            {% if app.user is defined and (is_granted('ROLE_ADMIN') or  is_granted('ROLE_MAGASINIER')) %}
+                                <li>
+                                    <a href="{{ path('stock_add') }}">Ajout</a>
+                                </li>
+                            {% endif %}
+
+                            <li>
+                                <a href="{{ path('stock_list') }}">Listes</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profil <b class="caret"></b></a>
+                        <ul class="dropdown-menu dropdown-menu-default">
+                            <li>
+                                {% if app.user is defined and app.user %}
+
+                                    <a href="{{ path('fos_user_profile_edit') }}">
+                                        <i class="icon-settings"></i> Mon compte
+                                    </a>
+                                {% endif %}
+
+                            </li>
+                            <li>
+                                <a href="{{ path('fos_user_change_password') }}">
+                                    <i class="icon-key"></i> Mot de passe
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{{ path('fos_user_security_logout') }}">
+                                    <i class="icon-logout"></i>
+                                    Déconnexion </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="{{ path('fos_user_security_logout') }}"><i class="glyphicon glyphicon-off"></i>
+                            Déconnexion</a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container body">
+
+        {% for type, messages in app.session.flashBag.all %}
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    {% for message in messages %}
+                        <div class="{{ type }}">
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true"></button>
+                            {{ message | raw }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+        {% block block %}
+
+        {% endblock %}
+
+    </div>
+{% endblock %}
